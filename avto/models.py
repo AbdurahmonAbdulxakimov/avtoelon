@@ -1,24 +1,8 @@
 from django.db import models
+from user.models import User
 from utils.models import BaseModel
 
-
-class Region(BaseModel):
-    title = models.CharField(max_length=256)
-
-    def __str__(self):
-        return self.title
-
-
-class District(BaseModel):
-    title = models.CharField(max_length=256)
-    region = models.ForeignKey(
-        Region, on_delete=models.CASCADE, related_name="districts"
-    )
-
-    is_filter = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title
+from common.models import District, Region
 
 
 # Create your models here.
@@ -57,7 +41,10 @@ class Post(BaseModel):
         District, on_delete=models.CASCADE, related_name="posts"
     )
 
+    phone = models.CharField(max_length=16)
+
     is_active = models.BooleanField(default=True)
+    favorite_of = models.ManyToManyField(User, related_name="posts")
 
     def __str__(self):
         return self.info
@@ -67,3 +54,12 @@ class Photo(BaseModel):
     image = models.ImageField(upload_to="photos")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="photos")
     is_main = models.BooleanField(default=False)
+
+
+class UserNotePost(BaseModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.content
