@@ -21,3 +21,18 @@ class PostSerializer(serializers.ModelSerializer):
             "main_photo",
             "district",
         )
+
+
+class RegionAvtoCountSerializer(serializers.Serializer):
+    region = serializers.CharField(max_length=256)
+    count = serializers.IntegerField()
+
+
+class PostRetriveSerializer(serializers.ModelSerializer):
+    district = serializers.StringRelatedField(source="json.district")
+    title = serializers.StringRelatedField(source="json.title", read_only=True)
+    options = serializers.ListField(source="json.options", read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ("id", "title", "district", "main_photo", "photos", "price", "options")

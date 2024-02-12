@@ -77,7 +77,7 @@ class Post(BaseModel):
         data["district"] = self.district.title
         data["photos_count"] = self.photos.count()
         data["title"] = f"{data['model']}"
-        data["extended_title"] = f"{data['model']} {data['year']} {self.price}  y.e."
+        data["extended_title"] = f"{data['model']} {data['year']} {self.price} y.e."
         return data
 
 
